@@ -27,14 +27,108 @@ found. It's a must for emacs configs.
 #+END_SRC
 * Core Setup
 ** Basic Stuff
+
 *** Better Defaults
 #+BEGIN_SRC emacs-lisp
   (use-package better-defaults
     :ensure t)
 #+END_SRC
+
 *** Splash Screen
 Remove splash screen and use *scratch* instead as the home buffer
 #+BEGIN_SRC emacs-lisp
-(setq inhibit-startup-message t
-      inhibit-startup-echo-area-message t)
+  (setq inhibit-startup-message t
+        inhibit-startup-echo-area-message t)
 #+END_SRC
+
+Increase the garbage-collection threshold.
+
+#+begin_src emacs-lisp
+  (setq gc-cons-threshold 100000000)
+  (setq max-specpdl-size 5000)
+#+end_src
+
+
+The most useful Emacs command is execute-extended-command. It should be painless to access from the home row. (bind-key* ensures that this setting is propagated through all major modes, which saves us a bunch of unbind-key calls in use-package stanzas.) Why not something even easier, like C-;, you ask? Unfortunately, macOS Terminal.app swallows that keybinding and does nothing with it. I’m sure this is correct behavior by some sort of standard, but I have to work around it, since occasionally I do use Emacs in the terminal.
+
+#+begin_src emacs-lisp
+  (bind-key* "C-c ;" #'execute-extended-command)
+  (bind-key* "C-c 4" #'execute-extended-command) ;; for a purely left-handed combo
+  (bind-key* "C-c C-;" #'execute-extended-command-for-buffer)
+#+end_src
+
+With this auxiliary package for use-package, we can instruct Emacs that a given package depends on the presence of a system tool. It will even install this tool with the system’s recommended package manager.
+
+#+begin_src emacs-lisp
+  (use-package use-package-ensure-system-package)
+#+end_src
+
+
+** Fix the Defaults
+
+#+begin_src emacs-lisp
+  (setq
+   inhibit-startup-screen t
+   initial-scratch-message nil
+   ring-bell-function 'ignore
+   save-interprogram-paste-before-kill t
+   use-dialog-box nil
+   kill-whole-line t
+   default-directory "~/code/"
+   load-prefer-newer t
+   confirm-kill-processes nil
+   ;; unicode ellipses are better
+   truncate-string-ellipsis "…"
+   delete-by-moving-to-trash t
+   )
+#+end_src
+
+UTF-8 should be the default
+#+begin_src emacs-lisp
+  (set-charset-priority 'unicode)
+  (prefer-coding-system 'utf-8-unix)
+#+end_src
+
+Turn off backups and autosaves.
+
+#+begin_src emacs-lisp
+  (setq
+   make-backup-files nil
+   auto-save-default nil
+   create-lockfiles nil
+   )
+#+end_src
+
+By default, Emacs stores any configuration you make through its UI by writing custom-set-variables invocations to your init file, or to the file specified by custom-file. Though this is convenient, it’s also an excellent way to cause aggravation when the variable you keep trying to modify is being set in some custom-set-variables invocation. We can disable this by mapping it to a temporary file. (I used to map this to /dev/null, but this started causing a bunch of inane save dialogues.)
+
+#+begin_src emacs-lisp
+  (setq custom-file (make-temp-name "/tmp/"))
+#+end_src
+
+Disable warning about theme safety
+
+#+begin_src emacs-lisp
+  (setq custom-safe-themes t)
+#+end_src
+
+** Visuals
+
+Emacs looks a lot better when it has a modern monospaced font and VSCode-esque icons, as well as smooth scrolling.
+
+#+begin_src emacs-lisp
+  (set-face-attribute 'default nil :font "Fira Code-13")
+  (set-face-attribute 'variable-pitch nil :font "Noto Sans-13")
+#+end_src
+
+Occupy all the screen space you can.
+
+#+begin_src emacs-lisp
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+#+end_src
+
+
+
+** References
+
+- [[https://github.com/patrickt/emacs/blob/master/readme.org][patrickt/emacs]]
+- [[https://github.com/himmAllRight/dotfiles/tree/master/emacs][himmAllright/emacs]]
