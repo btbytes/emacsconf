@@ -1,2 +1,40 @@
-* My Emacs Config
+#+TITLE: My Emacs Configuration
+#+AUTHOR: Pradeep Gowda
+#+EMAIL: btbytes@gmail.com
+#+OPTIONS: num:nil 
 
+My emacs configuration written in literate style using org-mode.
+
+* Repos & Core Packages
+** Melpa 
+Melpa is the big package repo that nearly /everything/ can be
+found. It's a must for emacs configs.
+
+#+BEGIN_SRC emacs-lisp
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(package-initialize)
+#+END_SRC
+
+** Setup =use-package= if isn't already
+#+BEGIN_SRC emacs-lisp
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(eval-when-compile
+  (require 'use-package))
+#+END_SRC
+* Core Setup
+** Basic Stuff
+*** Better Defaults
+#+BEGIN_SRC emacs-lisp
+  (use-package better-defaults
+    :ensure t)
+#+END_SRC
+*** Splash Screen
+Remove splash screen and use *scratch* instead as the home buffer
+#+BEGIN_SRC emacs-lisp
+(setq inhibit-startup-message t
+      inhibit-startup-echo-area-message t)
+#+END_SRC
