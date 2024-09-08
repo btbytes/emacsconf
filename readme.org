@@ -176,6 +176,35 @@ Use ripgrep via deadgrep.
 #+end_src
 
 
+** Language specific configurations
+
+*** markdown
+
+#+begin_src emacs-lisp
+    (use-package markdown-mode
+      :ensure t
+      :hook (gfm-mode . visual-line-mode)
+      :bind (:map markdown-mode-map ("C-c C-s a" . markdown-table-align))
+      :mode ("\\.md$" . gfm-mode)
+      :init (setq markdown-command "pandoc"))
+#+end_src
+
+*** just
+
+just is a great replacement for make.
+
+#+begin_src emacs-lisp
+  (use-package just-mode
+    :ensure t)
+#+end_src
+
+** Miscellaneous
+
+#+begin_src emacs-lisp
+  (use-package restclient
+    :ensure t)
+#+end_src
+
 ** References
 
 - [[https://github.com/patrickt/emacs/blob/master/readme.org][patrickt/emacs]]
