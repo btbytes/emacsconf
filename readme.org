@@ -25,6 +25,7 @@ found. It's a must for emacs configs.
 (eval-when-compile
   (require 'use-package))
 #+END_SRC
+
 * Core Setup
 ** Basic Stuff
 
@@ -126,7 +127,43 @@ Occupy all the screen space you can.
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 #+end_src
 
+** IDE Features
 
+*** Magit
+
+#+begin_src emacs-lisp
+  (use-package magit
+  :diminish magit-auto-revert-mode
+  :diminish auto-revert-mode
+  :bind (("C-c g" . #'magit-status))
+  :custom
+  (magit-diff-refine-hunk t)
+  (magit-repository-directories '(("~/src" . 1)))
+  (magit-list-refs-sortby "-creatordate")
+  :config
+  (defun pt/commit-hook () (set-fill-column 80))
+  (add-hook 'git-commit-setup-hook #'pt/commit-hook)
+  (add-to-list 'magit-no-confirm 'stage-all-changes))
+#+end_src
+
+Integration with github and other code forges.
+
+#+begin_src emacs-lisp
+  (use-package forge
+    :ensure t
+    :after magit)
+#+end_src
+
+*** Searching
+
+Use ripgrep via deadgrep.
+
+#+begin_src emacs-lisp
+  (use-package deadgrep
+  :ensure t
+  :ensure-system-package rg
+  :bind (("C-c H" . #'deadgrep)))
+#+end_src
 
 ** References
 
