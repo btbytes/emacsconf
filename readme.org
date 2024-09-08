@@ -178,6 +178,15 @@ Use ripgrep via deadgrep.
 
 ** Language specific configurations
 
+*** Clojure
+
+#+begin_src emacs-lisp
+  (use-package cider
+    :ensure t
+    )
+  (add-hook 'clojure-mode-hook #'cider-mode)
+#+end_src
+
 *** markdown
 
 #+begin_src emacs-lisp
