@@ -165,6 +165,17 @@ Use ripgrep via deadgrep.
   :bind (("C-c H" . #'deadgrep)))
 #+end_src
 
+*** Snippets
+
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    :ensure t
+    :defer 15
+    :config (yas-global-mode)
+    :custom (yas-prompt-functions '(yas-completing-prompt)))
+#+end_src
+
+
 ** References
 
 - [[https://github.com/patrickt/emacs/blob/master/readme.org][patrickt/emacs]]
