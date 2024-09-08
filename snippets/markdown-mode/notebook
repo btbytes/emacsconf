@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: notebook
+# key: notebook
+# binding: direct-keybinding
+# --
+
+---
+title: $1
+kind: notebook
+date: 202$2
+draft: true
+tags:
+- $3
+---
+
+$4
